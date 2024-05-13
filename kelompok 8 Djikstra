@@ -104,3 +104,64 @@ class WeightedGraph:
         # Generate all permutations of cities
         cities = list(self.cityList.keys())
         for path in permutations(cities):
+#
+            # Calculate total distance for current permutation
+            total_distance = 0
+            for i in range(len(path) - 1):
+                if path[i] in self.cityList and path[i + 1] in self.cityList[path[i]]:
+                    total_distance += self.cityList[path[i]][path[i + 1]]
+                else:
+                    total_distance = float('inf')
+             #
+                    break  # Break if path is invalid
+            #
+            # Check if current permutation is shorter than the current shortest path
+            if total_distance < shortest_distance:
+                shortest_distance = total_distance
+                shortest_path = path
+
+        return shortest_path, shortest_distance
+    
+    #
+# Example usage with Dijkstra's algorithm:
+petamalang = WeightedGraph()
+petamalang.tambahkanKota("wagir")
+petamalang.tambahkanKota("tidaratas")
+petamalang.tambahkanKota("singasari")
+petamalang.tambahkanKota("malang")
+petamalang.tambahkanKota("borobamban")
+petamalang.tambahkanKota("kedungrejo")
+petamalang.tambahkanKota("tamiajeng")
+petamalang.tambahkanKota("toempang")
+petamalang.tambahkanKota("gubukklakah")
+petamalang.tambahkanKota("sugro")
+
+petamalang.tambahkanJalan("wagir" , "tidaratas", 6.55)
+petamalang.tambahkanJalan("tidaratas" , "singasari", 10.50)
+petamalang.tambahkanJalan("singasari" , "malang", 9.12)
+petamalang.tambahkanJalan("malang" , "borobamban", 7.37)
+petamalang.tambahkanJalan("borobamban" ,"kedungrejo", 6.32)
+petamalang.tambahkanJalan("kedungrejo" , "tamiajeng", 4.73)
+petamalang.tambahkanJalan("tamiajeng" , "toempang", 5.31)
+petamalang.tambahkanJalan("toempang" , "gubukklakah", 7.81)
+petamalang.tambahkanJalan("gubukklakah" , "sugro", 12.97)
+petamalang.tambahkanJalan("sugro" , "wagir", 28.11)
+petamalang.tambahkanJalan("wagir" , "singasari", 15.51)
+petamalang.tambahkanJalan("tidaratas" , "malang", 3.40)
+petamalang.tambahkanJalan("singasari" , "borobamban", 6.15)
+petamalang.tambahkanJalan("malang" , "kedungrejo", 11.06)
+petamalang.tambahkanJalan("borobamban" , "tamiajeng", 7.13)
+petamalang.tambahkanJalan("kedungrejo" , "toempang", 4.37)
+petamalang.tambahkanJalan("tamiajeng" , "gubukklakah", 13.39)
+petamalang.tambahkanJalan("toempang" , "sugro", 13.70)
+petamalang.tambahkanJalan("gubukklakah" , "wagir", 26.05)
+petamalang.tambahkanJalan("sugro" , "tidaratas", 26.17)
+
+petamalang.printGraph()
+shortest_distances = petamalang.dijkstra("wagir")
+print("Shortest distances from Malang to other cities:")
+for city, distance in shortest_distances.items():
+    print(city, ":", distance)
+shortest_path, shortest_distance = petamalang.tsp()
+print("Shortest TSP path:", shortest_path)
+print("Shortest TSP distance:", shortest_distance)
